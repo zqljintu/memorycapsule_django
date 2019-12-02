@@ -1,7 +1,6 @@
 {
   "python.pythonPath": "D:\\python\\python.exe",
   "python.jediEnabled": false,
-  "prettier.eslintIntegration": true,
   "window.zoomLevel": 1,
   "search.followSymlinks": false,
   "editor.formatOnSave": true,
