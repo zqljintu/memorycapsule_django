@@ -11,6 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'memorycapsule_django.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                      'memorycapsule_django.settings')
+os.environ['PYTHON_EGG_CACHE'] = '/memorycapsule/temp'
 
 application = get_wsgi_application()

@@ -165,7 +165,7 @@ ROOT_URLCONF = 'memorycapsule_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'vue_work/dist')],
+        'DIRS': ['vue_work/dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
