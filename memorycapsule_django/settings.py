@@ -165,7 +165,7 @@ ROOT_URLCONF = 'memorycapsule_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'vue_work/dist')],
+        'DIRS': [os.path.join(BASE_DIR, 'vue_work/dist/deploy')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -233,5 +233,5 @@ STATIC_URL = '/static/'
 # Add for vuejs
 # 配置静态文件路径
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "vue_work/dist/static"),
+    os.path.join(BASE_DIR, "vue_work/dist/deploy/static"),
 ]
