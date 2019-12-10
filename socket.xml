@@ -1,0 +1,13 @@
+<uwsgi>
+    <chdir>/memorycapsule/django/memorycapsule_django/</chdir>
+    <module>memorycapsule_django.wsgi:application</module>
+    <virtualenv>/memorycapsule/wszql</virtualenv>
+    <master>true</master>
+    <processes>2</processes>
+    <harakiri>60</harakiri>
+    <vacuum>true</vacuum>
+    <max-requests>20000</max-requests>
+    <http>0.0.0.0:8000</http>
+    <daemonize>uwsgi.log</daemonize>
+    <py-autoreload>1</py-autoreload>
+</uwsgi>

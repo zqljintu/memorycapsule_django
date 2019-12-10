@@ -103,7 +103,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'f+o)=&hv_oektbud+oter-+$112gy(cz+bqi&dqf$7k$h#a9=('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -165,7 +165,7 @@ ROOT_URLCONF = 'memorycapsule_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'vue_work/dist')],
+        'DIRS': ['vue_work/dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
