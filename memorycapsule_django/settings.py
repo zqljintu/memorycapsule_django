@@ -230,6 +230,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Add for vuejs
 # 配置静态文件路径
 STATICFILES_DIRS = [
