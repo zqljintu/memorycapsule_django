@@ -79,17 +79,21 @@ def user_loginup(requset):
         useremail = requset.POST.get('email', '')
         usersex = requset.POST.get('sex', '')
         user = User()
-        if len(User.objects.all().filter(user_name=username)) == 0:
-            user.user_name = username
-            user.user_password = userpassword
-            user.user_email = useremail
-            user.user_sex = usersex
-            user.save()
-            response['msg'] = 'logup_success'
-            response['error_name'] = 0
+        if len(username) != 0:
+            if (len(User.objects.all().filter(user_name=username)) == 0 and (username != '')):
+                user.user_name = username
+                user.user_password = userpassword
+                user.user_email = useremail
+                user.user_sex = usersex
+                user.save()
+                response['msg'] = 'logup_success'
+                response['error_name'] = 0
+            else:
+                response['msg'] = 'name_repeat'
+                response['error_name'] = 201
         else:
-            response['msg'] = 'name_repeat'
-            response['error_name'] = 201
+            response['msg'] = 'name_error'
+            response['error_name'] = 208
     except Exception as e:
         response['msg'] = str(e)
         response['error_name'] = 1
