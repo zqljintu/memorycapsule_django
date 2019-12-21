@@ -27,18 +27,22 @@ def add_capsule(requset):
         c_location = requset.POST.get('capsule_location', '')
         c_person = requset.POST.get('capsule_person', '')
         c_image = requset.POST.get('capsule_image', '')
-        capsule = Capsule()
-        capsule.capsule_id = c_id
-        capsule.capsule_type = c_type
-        capsule.capsule_content = c_contet
-        capsule.capsule_time = c_time
-        capsule.capsule_date = c_date
-        capsule.capsule_location = c_location
-        capsule.capsule_image = c_image
-        capsule.capsule_person = c_person
-        capsule.save()
-        response['msg'] = 'add_success'
-        response['error_name'] = 206
+        if utils.checkStringEmpty(c_id):
+            response['msg'] = 'add_error_namenull'
+            response['error_name'] = 209
+        else:
+            capsule = Capsule()
+            capsule.capsule_id = c_id
+            capsule.capsule_type = c_type
+            capsule.capsule_content = c_contet
+            capsule.capsule_time = c_time
+            capsule.capsule_date = c_date
+            capsule.capsule_location = c_location
+            capsule.capsule_image = c_image
+            capsule.capsule_person = c_person
+            capsule.save()
+            response['msg'] = 'add_success'
+            response['error_name'] = 206
     except Exception as e:
         response['msg'] = str(e)
         response['error_name'] = 1
@@ -79,7 +83,7 @@ def user_loginup(requset):
         useremail = requset.POST.get('email', '')
         usersex = requset.POST.get('sex', '')
         user = User()
-        if len(username) != 0:
+        if len(username) != 0 and len(userpassword) != 0:
             if (len(User.objects.all().filter(user_name=username)) == 0 and (username != '')):
                 user.user_name = username
                 user.user_password = userpassword
@@ -92,7 +96,7 @@ def user_loginup(requset):
                 response['msg'] = 'name_repeat'
                 response['error_name'] = 201
         else:
-            response['msg'] = 'name_error'
+            response['msg'] = 'name/password_error'
             response['error_name'] = 208
     except Exception as e:
         response['msg'] = str(e)
