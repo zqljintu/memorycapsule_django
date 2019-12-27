@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'show_capsules$', views.show_capsules, name="拉取日记"),
     url(r'user_loginup', views.user_loginup, name="注册"),
     url(r"user_login", views.user_login, name="登录"),
+    url(r"delete_capsule", views.delete_capsule, name="删除")
 
 ]

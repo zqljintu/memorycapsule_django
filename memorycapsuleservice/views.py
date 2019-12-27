@@ -61,8 +61,7 @@ def show_capsules(request):
             response['error_name'] = 205  # 账号错误
         else:
             capsules = Capsule.objects.all().filter(capsule_id=username).order_by('-id')
-            response['list'] = json.loads(
-                serializers.serialize("json", capsules))
+            response['list'] = json.loads(serializers.serialize("json", capsules))
             response['msg'] = 'success'
             response['error_name'] = 207
     except Exception as e:
@@ -130,4 +129,37 @@ def user_login(requset):
         response['msg'] = str(e)
         response['error_name'] = 1
 
+    return JsonResponse(response)
+
+    # 删除方法
+
+
+@require_http_methods(["POST"])
+def delete_capsule(requset):
+    if requset.method == 'GET':
+        return render(requset, 'post.html')
+    response = {}
+    try:
+        username = requset.POST.get('username', '')
+        capsulepk = requset.POST.get('capsulepk', '')
+        if len(User.objects.all().filter(user_name=username)) == 0:
+            response['msg'] = 'username_null'
+            response['error_name'] = 202  # 没有该账号
+        else:
+            if len(Capsule.objects.all().filter(id=int(capsulepk))) != 0:
+                capsule = Capsule()
+                capsule = Capsule.objects.get(id=int(capsulepk))
+                if capsule.capsule_id == username:
+                    Capsule.objects.filter(id=capsulepk).delete()
+                    response['msg'] = 'capsule_delete success'
+                    response['error_name'] = 213  # 成功删除该条记录
+                else:
+                    response['msg'] = 'username is not id'
+                    response['error_name'] = 212  # 该条记录不是该用户名创建
+            else:
+                response['msg'] = 'capsule_null'
+                response['error_name'] = 211  # 没有该条记录
+    except Exception as e:
+        response['msg'] = str(e)
+        response['error_name'] = 210  # 删除失败
     return JsonResponse(response)
