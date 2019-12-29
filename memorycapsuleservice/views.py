@@ -73,7 +73,7 @@ def show_capsules(request):
 
 # 注册方法
 @require_http_methods(["POST"])
-def user_loginup(requset):
+def user_logup(requset):
     if requset.method == 'GET':
         return render(requset, 'post.html')
     response = {}
@@ -90,6 +90,33 @@ def user_loginup(requset):
                 user.user_email = useremail
                 user.user_sex = usersex
                 user.save()
+                response['msg'] = 'logup_success'
+                response['error_name'] = 0
+            else:
+                response['msg'] = 'name_repeat'
+                response['error_name'] = 201
+        else:
+            response['msg'] = 'name/password_error'
+            response['error_name'] = 208
+    except Exception as e:
+        response['msg'] = str(e)
+        response['error_name'] = 1
+
+    return JsonResponse(response)
+
+# 注销账号方法
+@require_http_methods(["POST"])
+def user_loginup(requset):
+    if requset.method == 'GET':
+        return render(requset, 'post.html')
+    response = {}
+    try:
+        username = requset.POST.get('username', '')
+        userpassword = requset.POST.get('password', '')
+        user = User()
+        if len(username) != 0 and len(userpassword) != 0:
+            if (len(User.objects.all().filter(user_name=username)) != 0 and (username != '')):
+                
                 response['msg'] = 'logup_success'
                 response['error_name'] = 0
             else:
@@ -202,7 +229,7 @@ def edit_capsule(requset):
                     capsule.capsule_person = c_person
                     capsule.save()
                     response['msg'] = 'capsule_edit success'
-                    response['error_name'] = 213  # 成功删除该条记录
+                    response['error_name'] = 213  # 成功修改该条记录
             else:
                 response['msg'] = 'capsule_null'
                 response['error_name'] = 211  # 没有该条记录

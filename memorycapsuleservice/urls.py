@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'user_loginup', views.user_loginup, name="注册"),
     url(r"user_login", views.user_login, name="登录"),
     url(r"delete_capsule", views.delete_capsule, name="删除"),
-    url(r"edit_capsule", views.edit_capsule, name="修改")
+    url(r"edit_capsule", views.edit_capsule, name="修改"),
+    url(r"user_logout", views.user_logup, name="注销")
 ]
