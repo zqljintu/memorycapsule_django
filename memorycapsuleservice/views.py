@@ -56,6 +56,7 @@ def show_capsules(request):
     try:
         username = ''
         username = request.GET.get('username')
+        logger.info('zzzzzzzzzzzzz%s-->', username)
         if utils.checkStringEmpty(username):
             response['msg'] = str('usrtname_error')
             response['error_name'] = 205  # 账号错误
@@ -73,7 +74,7 @@ def show_capsules(request):
 
 # 注册方法
 @require_http_methods(["POST"])
-def user_logup(requset):
+def user_loginup(requset):
     if requset.method == 'GET':
         return render(requset, 'post.html')
     response = {}
@@ -106,24 +107,33 @@ def user_logup(requset):
 
 # 注销账号方法
 @require_http_methods(["POST"])
-def user_loginup(requset):
+def user_logout(requset):
     if requset.method == 'GET':
         return render(requset, 'post.html')
     response = {}
     try:
         username = requset.POST.get('username', '')
-        userpassword = requset.POST.get('password', '')
-        user = User()
-        if len(username) != 0 and len(userpassword) != 0:
+        password = requset.POST.get('password', '')
+        logger.info('zzzzzzzzzzzzz1--->%s', username)
+        logger.info('zzzzzzzzzzzzz2--->%s', password)
+        if len(username) != 0 and len(password) != 0:
             if (len(User.objects.all().filter(user_name=username)) != 0 and (username != '')):
-                
-                response['msg'] = 'logup_success'
-                response['error_name'] = 0
+                user = User.objects.all().get(user_name=username)
+                if user.user_password == password:
+                    user.delete()
+                    capsules = Capsule.objects.all().filter(capsule_id=username)
+                    for capsule in capsules:
+                        capsule.delete()
+                    response['msg'] = 'logout_success'
+                    response['error_name'] = 0
+                else:
+                    response['msg'] = 'logout_error'
+                    response['error_name'] = 0
             else:
                 response['msg'] = 'name_repeat'
                 response['error_name'] = 201
         else:
-            response['msg'] = 'name/password_error'
+            response['msg'] = username
             response['error_name'] = 208
     except Exception as e:
         response['msg'] = str(e)
