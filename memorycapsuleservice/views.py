@@ -125,16 +125,16 @@ def user_logout(requset):
                     for capsule in capsules:
                         capsule.delete()
                     response['msg'] = 'logout_success'
-                    response['error_name'] = 0
+                    response['error_name'] = 219
                 else:
-                    response['msg'] = 'logout_error'
-                    response['error_name'] = 0
+                    response['msg'] = 'logout_error--> name!= pass'
+                    response['error_name'] = 218
             else:
-                response['msg'] = 'name_repeat'
-                response['error_name'] = 201
+                response['msg'] = 'name null'
+                response['error_name'] = 216
         else:
-            response['msg'] = username
-            response['error_name'] = 208
+            response['msg'] = 'name/pass -->empty'
+            response['error_name'] = 217
     except Exception as e:
         response['msg'] = str(e)
         response['error_name'] = 1
