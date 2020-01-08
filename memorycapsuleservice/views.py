@@ -85,7 +85,7 @@ def user_loginup(requset):
         usersex = requset.POST.get('sex', '')
         user = User()
         if len(username) != 0 and len(userpassword) != 0:
-            if (len(User.objects.all().filter(user_name=username)) == 0 and (username != '')):
+            if len(User.objects.all().filter(user_name=username)) == 0 and (username != ''):
                 user.user_name = username
                 user.user_password = userpassword
                 user.user_email = useremail
@@ -117,7 +117,7 @@ def user_logout(requset):
         logger.info('zzzzzzzzzzzzz1--->%s', username)
         logger.info('zzzzzzzzzzzzz2--->%s', password)
         if len(username) != 0 and len(password) != 0:
-            if (len(User.objects.all().filter(user_name=username)) != 0 and (username != '')):
+            if len(User.objects.all().filter(user_name=username)) != 0 and (username != ''):
                 user = User.objects.all().get(user_name=username)
                 if user.user_password == password:
                     user.delete()
