@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Capsule
-from .models import User
+from memorycapsuleservice.model.models import Capsule
+from memorycapsuleservice.model.models import User
 
 # Register your models here.
 admin.site.register(Capsule)

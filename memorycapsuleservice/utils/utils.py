@@ -10,7 +10,7 @@ class utils:
     # 判断字符串是否为空
     @staticmethod
     def checkStringEmpty(str):
-        if len(str) == 0 or str.isspace():
+        if str.isspace() or len(str) == 0:
             return True
         else:
             return False
