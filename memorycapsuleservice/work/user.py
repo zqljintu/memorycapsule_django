@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
-from django.core import serializers
 from django.http import JsonResponse
-import json
 from memorycapsuleservice.model.models import Capsule
 from memorycapsuleservice.model.models import User
 import logging

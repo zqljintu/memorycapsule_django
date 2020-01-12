@@ -62,6 +62,8 @@ class User(models.Model):
     user_password = models.CharField(max_length=256, default='')
     user_email = models.EmailField(unique=False, default='')
     user_sex = models.CharField(max_length=32, choices=gender, default=M)
+    user_nickname = models.CharField(max_length=128, default='')
+    user_title = models.CharField(max_length=256, default='')
     user_create_time = models.DateTimeField(default=timezone.now)
 
     def __unicode__(self):
@@ -78,6 +80,12 @@ class User(models.Model):
 
     def __unicode__(self):
         return self.user_create_time
+
+    def __unicode__(self):
+        return self.user_title
+
+    def __unicode__(self):
+        return self.user_nickname
 
         class Meta:
             ordering = ["user_create_time"]
