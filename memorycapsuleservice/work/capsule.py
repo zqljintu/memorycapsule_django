@@ -56,18 +56,32 @@ def add_capsule(requset):
 def show_capsules(request):
     response = {}
     try:
-        username = ''
-        username = request.GET.get('username')
-        logger.info('zzzzzzzzzzzzz%s-->', username)
+        username = request.GET.get('username', '')
+        password = request.META.get('HTTP_PASSWORD', '')
+        logger.info('zzzzzzzzzzzzz-->%s', username)
+        logger.info('zzzzzzzzzzzzz-->%s', password)
+        if utils.checkStringEmpty(password):
+            response['msg'] = str('password_null')
+            response['code'] = 220  # 密码为空
+            return JsonResponse(response)
         if utils.checkStringEmpty(username):
-            response['msg'] = str('usrtname_error')
-            response['code'] = 205  # 账号错误
+            response['msg'] = str('username_null')
+            response['code'] = 221  # 账号为空
+            return JsonResponse(response)
         else:
-            capsules = Capsule.objects.all().filter(capsule_id=username).order_by('-id')
-            response['list'] = json.loads(
-                serializers.serialize("json", capsules))
-            response['msg'] = 'success'
-            response['code'] = 207
+            if User.objects.all().filter(user_name=username).count() == 0:
+                response['msg'] = str('username_null')
+                response['code'] = 202  # 没有该账号
+            else:
+                if utils.checkTwoString(password, User.objects.get(user_name=username).user_password):
+                    capsules = Capsule.objects.all().filter(capsule_id=username).order_by('-id')
+                    response['list'] = json.loads(
+                        serializers.serialize("json", capsules))
+                    response['msg'] = 'success'
+                    response['code'] = 207
+                else:
+                    response['msg'] = str('name != pass')
+                    response['code'] = 204  # 账号密码不匹配
     except Exception as e:
         response['msg'] = str(e)
         response['code'] = 1
@@ -165,11 +179,11 @@ def get_capsuleSize(request):
         logger.info('zzzzzzzzzzzzz-->%s', password)
         if utils.checkStringEmpty(password):
             response['msg'] = str('password_null')
-            response['code'] = 220  # 密码错误
+            response['code'] = 220  # 密码为空
             return JsonResponse(response)
         if utils.checkStringEmpty(username):
             response['msg'] = str('username_null')
-            response['code'] = 221  # 账号错误
+            response['code'] = 221  # 账号为空
             return JsonResponse(response)
         else:
             if User.objects.all().filter(user_name=username).count() == 0:
@@ -178,11 +192,11 @@ def get_capsuleSize(request):
             else:
                 if utils.checkTwoString(password, User.objects.get(user_name=username).user_password):
                     size = Capsule.objects.all().filter(capsule_id=username).count()
-                    response['msg'] = str('username_null')
+                    response['msg'] = str('capsulesize_success')
                     response['size'] = size
                     response['code'] = 222  # 获取capsule数量成功
                 else:
-                    response['msg'] = str('login_error')
+                    response['msg'] = str('name != pass')
                     response['code'] = 204  # 账号密码不匹配
     except Exception as e:
         response['msg'] = str(e)
