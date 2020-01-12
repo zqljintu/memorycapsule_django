@@ -10,6 +10,10 @@ import logging
 from memorycapsuleservice.utils.utils import utils
 
 logger = logging.getLogger('log')
+"""
+Created bu jintu 2020/01/12
+这是关于capsule操作的一些方法
+"""
 
 
 # Create your views here.

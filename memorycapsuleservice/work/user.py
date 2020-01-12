@@ -11,6 +11,10 @@ from memorycapsuleservice.utils.utils import utils
 
 logger = logging.getLogger('log')
 
+"""
+Created bu jintu 2020/01/12
+这是关于user操作的一些方法
+"""
 # Create your views here.
 
 # 注册方法
