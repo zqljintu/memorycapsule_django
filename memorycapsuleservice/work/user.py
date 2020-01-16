@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
+from rest_framework_jwt.utils import jwt_decode_handler
+
 from memorycapsuleservice.model.models import Capsule
 from memorycapsuleservice.model.models import User
 from rest_framework_jwt.settings import api_settings
@@ -20,15 +22,15 @@ Created by jintu 2020/01/12
 
 # 注册方法
 @require_http_methods(["POST"])
-def user_loginup(requset):
-    if requset.method == 'GET':
-        return render(requset, 'post.html')
+def user_loginup(request):
+    if request.method == 'GET':
+        return render(request, 'post.html')
     response = {}
     try:
-        username = requset.POST.get('username', '')
-        userpassword = requset.POST.get('password', '')
-        useremail = requset.POST.get('email', '')
-        usersex = requset.POST.get('sex', '')
+        username = request.POST.get('username', '')
+        userpassword = request.POST.get('password', '')
+        useremail = request.POST.get('email', '')
+        usersex = request.POST.get('sex', '')
         user = User()
         if len(username) != 0 and len(userpassword) != 0:
             if len(User.objects.all().filter(username=username)) == 0 and (username != ''):
@@ -60,19 +62,26 @@ def user_loginup(requset):
 
 # 注销账号方法
 @require_http_methods(["POST"])
-def user_logout(requset):
-    if requset.method == 'GET':
-        return render(requset, 'post.html')
+def user_logout(request):
+    if request.method == 'GET':
+        return render(request, 'post.html')
     response = {}
     try:
-        username = requset.POST.get('username', '')
-        password = requset.POST.get('password', '')
+        token = request.META.get('HTTP_AUTHENTICATION', '')
+        logger.info('zzzzzzzzzzzzz-->%s', token)
+        if utils.checkStringEmpty(token):
+            response['msg'] = str('username_null')
+            response['code'] = 221  # 账号为空
+            return JsonResponse(response)
+        user_dict = jwt_decode_handler(token=token)
+        username = user_dict['username']
+        password = request.POST.get('password', '')
         logger.info('zzzzzzzzzzzzz1--->%s', username)
         logger.info('zzzzzzzzzzzzz2--->%s', password)
         if len(username) != 0 and len(password) != 0:
-            if len(User.objects.all().filter(user_name=username)) != 0 and (username != ''):
-                user = User.objects.all().get(user_name=username)
-                if user.user_password == password:
+            if len(User.objects.all().filter(username=username)) != 0 and (username != ''):
+                user = User.objects.all().get(username=username)
+                if user.userpassword == password:
                     user.delete()
                     capsules = Capsule.objects.all().filter(capsule_id=username)
                     for capsule in capsules:
@@ -97,13 +106,13 @@ def user_logout(requset):
 
 # 登录方法
 @require_http_methods(["POST"])
-def user_login(requset):
-    if requset.method == 'GET':
-        return render(requset, 'post.html')
+def user_login(request):
+    if request.method == 'GET':
+        return render(request, 'post.html')
     response = {}
     try:
-        username = requset.POST.get('username', '')
-        userpassword = requset.POST.get('password', '')
+        username = request.POST.get('username', '')
+        userpassword = request.POST.get('password', '')
         if len(User.objects.all().filter(username=username)) == 0:
             response['msg'] = 'username_null'
             response['code'] = 202  # 没有该账号
