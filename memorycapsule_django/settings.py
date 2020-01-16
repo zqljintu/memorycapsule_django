@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import datetime
 import os
 import time
 
@@ -119,6 +119,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'memorycapsuleservice',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,22 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# drf框架的配置信息
+REST_FRAMEWORK = {
+    # 异常处理
+    'EXCEPTION_HANDLER': 'luffy.utils.exceptions.custom_exception_handler',
+    # 用户登陆认证方式
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+# jwt载荷中的有效期设置
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),#有效期设置
+}
 
 # 跨域增加忽略
 CORS_ALLOW_CREDENTIALS = True

@@ -58,36 +58,36 @@ class User(models.Model):
         ('male', '男'),
         ('female', '女'),
     )
-    user_name = models.CharField(max_length=128, unique=True)
-    user_password = models.CharField(max_length=256, default='')
-    user_email = models.EmailField(unique=False, default='')
-    user_sex = models.CharField(max_length=32, choices=gender, default=M)
-    user_nickname = models.CharField(max_length=128, default='')
-    user_title = models.CharField(max_length=256, default='')
-    user_create_time = models.DateTimeField(default=timezone.now)
+    username = models.CharField(max_length=128, unique=True)
+    userpassword = models.CharField(max_length=256, default='')
+    useremail = models.EmailField(unique=False, default='')
+    usersex = models.CharField(max_length=32, choices=gender, default=M)
+    usernickname = models.CharField(max_length=128, default='')
+    usertitle = models.CharField(max_length=256, default='')
+    usercreatetime = models.DateTimeField(default=timezone.now)
 
     def __unicode__(self):
-        return self.user_name
+        return self.username
 
     def __unicode__(self):
-        return self.user_password
+        return self.userpassword
 
     def __unicode__(self):
-        return self.user_emailpy
+        return self.useremail
 
     def __unicode__(self):
-        return self.user_sex
+        return self.usersex
 
     def __unicode__(self):
-        return self.user_create_time
+        return self.usercreatetime
 
     def __unicode__(self):
-        return self.user_title
+        return self.usertitle
 
     def __unicode__(self):
-        return self.user_nickname
+        return self.usernickname
 
         class Meta:
-            ordering = ["user_create_time"]
+            ordering = ["usercreatetime"]
             verbose_name = "用户"
             verbose_name_plural = "用户"

@@ -3,6 +3,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from memorycapsuleservice.model.models import Capsule
 from memorycapsuleservice.model.models import User
+from rest_framework_jwt.settings import api_settings
 import logging
 
 from memorycapsuleservice.utils.utils import utils
@@ -10,9 +11,11 @@ from memorycapsuleservice.utils.utils import utils
 logger = logging.getLogger('log')
 
 """
-Created bu jintu 2020/01/12
+Created by jintu 2020/01/12
 这是关于user操作的一些方法
 """
+
+
 # Create your views here.
 
 # 注册方法
@@ -28,11 +31,11 @@ def user_loginup(requset):
         usersex = requset.POST.get('sex', '')
         user = User()
         if len(username) != 0 and len(userpassword) != 0:
-            if len(User.objects.all().filter(user_name=username)) == 0 and (username != ''):
-                user.user_name = username
-                user.user_password = userpassword
-                user.user_email = useremail
-                user.user_sex = usersex
+            if len(User.objects.all().filter(username=username)) == 0 and (username != ''):
+                user.username = username
+                user.userpassword = userpassword
+                user.useremail = useremail
+                user.usersex = usersex
                 user.save()
                 response['msg'] = 'logup_success'
                 response['code'] = 0
@@ -47,6 +50,7 @@ def user_loginup(requset):
         response['code'] = 1
 
     return JsonResponse(response)
+
 
 # 注销账号方法
 @require_http_methods(["POST"])
@@ -84,6 +88,7 @@ def user_logout(requset):
 
     return JsonResponse(response)
 
+
 # 登录方法
 @require_http_methods(["POST"])
 def user_login(requset):
@@ -93,15 +98,19 @@ def user_login(requset):
     try:
         username = requset.POST.get('username', '')
         userpassword = requset.POST.get('password', '')
-        user = User()
-        if len(User.objects.all().filter(user_name=username)) == 0:
+        if len(User.objects.all().filter(username=username)) == 0:
             response['msg'] = 'username_null'
             response['code'] = 202  # 没有该账号
         else:
-            if utils.checkTwoString(userpassword, User.objects.get(user_name=username).user_password):
-                user = User.objects.get(user_name=username)
+            if utils.checkTwoString(userpassword, User.objects.get(username=username).userpassword):
+                user = User.objects.get(username=username)
+                jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+                jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+                payload = jwt_payload_handler(user)
+                token = jwt_encode_handler(payload)
+                response['token'] = token
                 response['msg'] = 'login_success'
-                response['sex'] = user.user_sex
+                response['sex'] = user.usersex
                 response['code'] = 203  # 登录成功
             else:
                 response['msg'] = 'login_error'
@@ -111,27 +120,3 @@ def user_login(requset):
         response['code'] = 1
 
     return JsonResponse(response)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
