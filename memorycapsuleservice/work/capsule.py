@@ -27,7 +27,7 @@ def add_capsule(request):
         return render(request, 'post.html')
     response = {}
     try:
-        token = request.META.get('HTTP_AUTHENTICATION', '')
+        token = request.META.get('HTTP_AUTHORIZATION', '')
         logger.info('zzzzzzzzzzzzz-->%s', token)
         if utils.checkStringEmpty(token):
             response['msg'] = str('username_null')
@@ -69,8 +69,8 @@ def add_capsule(request):
 @require_http_methods(["GET"])
 def show_capsules(request):
     response = {}
-    try:
-        token = request.META.get('HTTP_AUTHENTICATION', '')
+    try:                              
+        token = request.META.get('HTTP_AUTHORIZATION', '')
         logger.info('zzzzzzzzzzzzz-->%s', token)
         if utils.checkStringEmpty(token):
             response['msg'] = str('username_null')
@@ -103,9 +103,10 @@ def delete_capsule(request):
         return render(request, 'post.html')
     response = {}
     try:
-        token = request.META.get('HTTP_AUTHENTICATION', '')
+        token = request.META.get('HTTP_AUTHORIZATION', '')
         capsulepk = request.POST.get('capsule_pk', '')
         logger.info('zzzzzzzzzzzzz-->%s', token)
+        logger.info('zzzzzzzzzzzpk-->%s', capsulepk)
         if utils.checkStringEmpty(token):
             response['msg'] = str('username_null')
             response['code'] = 221  # 账号为空
@@ -141,7 +142,7 @@ def edit_capsule(request):
         return render(request, 'post.html')
     response = {}
     try:
-        token = request.META.get('HTTP_AUTHENTICATION', '')
+        token = request.META.get('HTTP_AUTHORIZATION', '')
         c_pk = request.POST.get('capsule_pk', '')
         logger.info('zzzzzzzzzzzzz-->%s', token)
         if utils.checkStringEmpty(token):
@@ -193,7 +194,7 @@ def edit_capsule(request):
 def get_capsuleSize(request):
     response = {}
     try:
-        token = request.META.get('HTTP_AUTHENTICATION', '')
+        token = request.META.get('HTTP_AUTHORIZATION', '')
         logger.info('zzzzzzzzzzzzz-->%s', token)
         if utils.checkStringEmpty(token):
             response['msg'] = str('username_null')

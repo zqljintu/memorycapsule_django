@@ -67,7 +67,7 @@ def user_logout(request):
         return render(request, 'post.html')
     response = {}
     try:
-        token = request.META.get('HTTP_AUTHENTICATION', '')
+        token = request.META.get('HTTP_AUTHORIZATION', '')
         logger.info('zzzzzzzzzzzzz-->%s', token)
         if utils.checkStringEmpty(token):
             response['msg'] = str('username_null')
