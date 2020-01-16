@@ -14,7 +14,7 @@ from memorycapsuleservice.utils.utils import utils
 
 logger = logging.getLogger('log')
 """
-Created bu jintu 2020/01/12
+Created by jintu 2020/01/12
 这是关于capsule操作的一些方法
 """
 
@@ -33,8 +33,9 @@ def add_capsule(request):
             response['msg'] = str('username_null')
             response['code'] = 221  # 账号为空
             return JsonResponse(response)
+        user_dict = jwt_decode_handler(token=token)
+        c_id = user_dict['username']
         c_contet = request.POST.get('capsule_content', '')
-        c_id = request.POST.get('capsule_id', '')
         c_type = request.POST.get('capsule_type', '')
         c_time = request.POST.get('capsule_time', '')
         c_date = request.POST.get('capsule_date', '')
@@ -103,7 +104,7 @@ def delete_capsule(request):
     response = {}
     try:
         token = request.META.get('HTTP_AUTHENTICATION', '')
-        capsulepk = request.POST.get('capsulepk', '')
+        capsulepk = request.POST.get('capsule_pk', '')
         logger.info('zzzzzzzzzzzzz-->%s', token)
         if utils.checkStringEmpty(token):
             response['msg'] = str('username_null')
@@ -154,8 +155,8 @@ def edit_capsule(request):
             response['code'] = 202  # 没有该账号
         else:
             if Capsule.objects.all().filter(id=int(c_pk)).count() != 0:
-                c_contet = request.POST.get('capsule_content', '')
-                c_id = request.POST.get('capsule_id', '')
+                c_content = request.POST.get('capsule_content', '')
+                c_id = username
                 c_type = request.POST.get('capsule_type', '')
                 c_time = request.POST.get('capsule_time', '')
                 c_date = request.POST.get('capsule_date', '')
@@ -163,13 +164,13 @@ def edit_capsule(request):
                 c_person = request.POST.get('capsule_person', '')
                 c_image = request.POST.get('capsule_image', '')
                 if utils.checkStringEmpty(c_id):
-                    response['msg'] = 'eddit_codenull'
+                    response['msg'] = 'edit_usernull'
                     response['code'] = 209
                 else:
                     capsule = Capsule.objects.get(id=int(c_pk))
                     capsule.capsule_id = c_id
                     capsule.capsule_type = c_type
-                    capsule.capsule_content = c_contet
+                    capsule.capsule_content = c_content
                     capsule.capsule_time = c_time
                     capsule.capsule_date = c_date
                     capsule.capsule_location = c_location

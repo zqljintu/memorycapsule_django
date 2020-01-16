@@ -37,7 +37,13 @@ def user_loginup(requset):
                 user.useremail = useremail
                 user.usersex = usersex
                 user.save()
+                jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+                jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+                payload = jwt_payload_handler(user)
+                token = jwt_encode_handler(payload)
                 response['msg'] = 'logup_success'
+                response['token'] = token
+                response['sex'] = usersex
                 response['code'] = 0
             else:
                 response['msg'] = 'name_repeat'
