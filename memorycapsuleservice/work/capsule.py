@@ -27,14 +27,7 @@ def add_capsule(request):
         return render(request, 'post.html')
     response = {}
     try:
-        token = request.META.get('HTTP_AUTHORIZATION', '')
-        logger.info('zzzzzzzzzzzzz-->%s', token)
-        if utils.checkStringEmpty(token):
-            response['msg'] = str('username_null')
-            response['code'] = 221  # 账号为空
-            return JsonResponse(response)
-        user_dict = jwt_decode_handler(token=token)
-        c_id = user_dict['username']
+        c_id = request.POST.get('username')
         c_contet = request.POST.get('capsule_content', '')
         c_type = request.POST.get('capsule_type', '')
         c_time = request.POST.get('capsule_time', '')
@@ -69,26 +62,17 @@ def add_capsule(request):
 @require_http_methods(["GET"])
 def show_capsules(request):
     response = {}
-    try:                              
-        token = request.META.get('HTTP_AUTHORIZATION', '')
-        logger.info('zzzzzzzzzzzzz-->%s', token)
-        if utils.checkStringEmpty(token):
+    try:
+        username = request.GET.get('username')
+        if User.objects.all().filter(username=username).count() == 0:
             response['msg'] = str('username_null')
-            response['code'] = 221  # 账号为空
-            return JsonResponse(response)
+            response['code'] = 202  # 没有该账号
         else:
-            user_dict = jwt_decode_handler(token=token)
-            username = user_dict['username']
-            logger.info('zzzzzzzzzzzzz-->%s', username)
-            if User.objects.all().filter(username=username).count() == 0:
-                response['msg'] = str('username_null')
-                response['code'] = 202  # 没有该账号
-            else:
-                capsules = Capsule.objects.all().filter(capsule_id=username).order_by('-id')
-                response['list'] = json.loads(
-                    serializers.serialize("json", capsules))
-                response['msg'] = 'success'
-                response['code'] = 207
+            capsules = Capsule.objects.all().filter(capsule_id=username).order_by('-id')
+            response['list'] = json.loads(
+                serializers.serialize("json", capsules))
+            response['msg'] = 'success'
+            response['code'] = 207
     except Exception as e:
         response['msg'] = str(e)
         response['code'] = 1
@@ -103,16 +87,8 @@ def delete_capsule(request):
         return render(request, 'post.html')
     response = {}
     try:
-        token = request.META.get('HTTP_AUTHORIZATION', '')
         capsulepk = request.POST.get('capsule_pk', '')
-        logger.info('zzzzzzzzzzzzz-->%s', token)
-        logger.info('zzzzzzzzzzzpk-->%s', capsulepk)
-        if utils.checkStringEmpty(token):
-            response['msg'] = str('username_null')
-            response['code'] = 221  # 账号为空
-            return JsonResponse(response)
-        user_dict = jwt_decode_handler(token=token)
-        username = user_dict['username']
+        username = request.POST.get('username')
         if User.objects.all().filter(username=username).count() == 0:
             response['msg'] = 'username_null'
             response['code'] = 202  # 没有该账号
@@ -142,15 +118,8 @@ def edit_capsule(request):
         return render(request, 'post.html')
     response = {}
     try:
-        token = request.META.get('HTTP_AUTHORIZATION', '')
         c_pk = request.POST.get('capsule_pk', '')
-        logger.info('zzzzzzzzzzzzz-->%s', token)
-        if utils.checkStringEmpty(token):
-            response['msg'] = str('username_null')
-            response['code'] = 221  # 账号为空
-            return JsonResponse(response)
-        user_dict = jwt_decode_handler(token=token)
-        username = user_dict['username']
+        username = request.POST.get('username')
         if User.objects.all().filter(username=username).count() == 0:
             response['msg'] = 'username_null'
             response['code'] = 202  # 没有该账号

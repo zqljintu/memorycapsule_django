@@ -67,17 +67,8 @@ def user_logout(request):
         return render(request, 'post.html')
     response = {}
     try:
-        token = request.META.get('HTTP_AUTHORIZATION', '')
-        logger.info('zzzzzzzzzzzzz-->%s', token)
-        if utils.checkStringEmpty(token):
-            response['msg'] = str('username_null')
-            response['code'] = 221  # 账号为空
-            return JsonResponse(response)
-        user_dict = jwt_decode_handler(token=token)
-        username = user_dict['username']
+        username = request.POST.get('username')
         password = request.POST.get('password', '')
-        logger.info('zzzzzzzzzzzzz1--->%s', username)
-        logger.info('zzzzzzzzzzzzz2--->%s', password)
         if len(username) != 0 and len(password) != 0:
             if len(User.objects.all().filter(username=username)) != 0 and (username != ''):
                 user = User.objects.all().get(username=username)
