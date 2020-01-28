@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
-from rest_framework_jwt.utils import jwt_decode_handler
 
 from memorycapsuleservice.model.models import Capsule
 from memorycapsuleservice.model.models import User
@@ -46,6 +45,14 @@ def user_loginup(request):
                 response['msg'] = 'logup_success'
                 response['token'] = token
                 response['sex'] = usersex
+                if user.usertitle == '':
+                    response['usertitle'] = '个性签名'
+                else:
+                    response['usertitle'] = user.usertitle
+                if user.usernickname == '':
+                    response['nickname'] = '昵称'
+                else:
+                    response['nickname'] = user.usernickname
                 response['code'] = 0
             else:
                 response['msg'] = 'name_repeat'
@@ -117,10 +124,69 @@ def user_login(request):
                 response['token'] = token
                 response['msg'] = 'login_success'
                 response['sex'] = user.usersex
+                if user.usertitle == '':
+                    response['usertitle'] = '个性签名'
+                else:
+                    response['usertitle'] = user.usertitle
+                if user.usernickname == '':
+                    response['nickname'] = '昵称'
+                else:
+                    response['nickname'] = user.usernickname
                 response['code'] = 203  # 登录成功
             else:
                 response['msg'] = 'login_error'
                 response['code'] = 204  # 登录失败，账号密码不匹配
+    except Exception as e:
+        response['msg'] = str(e)
+        response['code'] = 1
+
+    return JsonResponse(response)
+
+# 修改昵称
+@require_http_methods(["POST"])
+def edit_nickname(request):
+    if request.method == 'GET':
+        return render(request, 'post.html')
+    response = {}
+    try:
+        username = request.POST.get('username', '')
+        nickname = request.POST.get('nickname', '')
+        if len(User.objects.all().filter(username=username)) == 0:
+            response['msg'] = 'username_null'
+            response['code'] = 202  # 没有该账号
+        else:
+            user = User.objects.get(username=username)
+            user.usernickname = nickname
+            user.save()
+            response['msg'] = 'edit_nickname success'
+            response['code'] = 223
+            response['nickname'] = user.usernickname
+    except Exception as e:
+        response['msg'] = str(e)
+        response['code'] = 1
+
+    return JsonResponse(response)
+
+
+# 修改个性签名
+@require_http_methods(["POST"])
+def edit_usertitle(request):
+    if request.method == 'GET':
+        return render(request, 'post.html')
+    response = {}
+    try:
+        username = request.POST.get('username', '')
+        usertitle = request.POST.get('usertitle', '')
+        if len(User.objects.all().filter(username=username)) == 0:
+            response['msg'] = 'username_null'
+            response['code'] = 202  # 没有该账号
+        else:
+            user = User.objects.get(username=username)
+            user.usertitle = usertitle
+            user.save()
+            response['msg'] = 'edit_usertitle success'
+            response['code'] = 225
+            response['usertitle'] = usertitle
     except Exception as e:
         response['msg'] = str(e)
         response['code'] = 1
