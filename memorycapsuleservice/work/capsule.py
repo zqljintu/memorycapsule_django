@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, PageNotAnInteger, InvalidPage, EmptyPage
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.core import serializers
@@ -64,13 +65,25 @@ def show_capsules(request):
     response = {}
     try:
         username = request.GET.get('username')
+        page = request.GET.get('page')
         if User.objects.all().filter(username=username).count() == 0:
             response['msg'] = str('username_null')
             response['code'] = 202  # 没有该账号
         else:
             capsules = Capsule.objects.all().filter(capsule_id=username).order_by('-id')
+            paginator = Paginator(capsules, 20)
+            try:
+                result = paginator.page(page)
+            except PageNotAnInteger:
+                result = paginator.page(1)
+            except InvalidPage:
+                result = 'not fond any page'
+            except EmptyPage:
+                result = paginator.page(paginator.num_pages)
             response['list'] = json.loads(
-                serializers.serialize("json", capsules))
+                serializers.serialize("json", result))
+            response['page'] = page
+            response['pagecount'] = paginator.num_pages
             response['msg'] = 'success'
             response['code'] = 207
     except Exception as e:

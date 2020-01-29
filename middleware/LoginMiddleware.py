@@ -19,7 +19,7 @@ class LoginMiddleware(MiddlewareMixin):
             try:
                 token = request.META.get('HTTP_AUTHORIZATION', '')
                 if utils.checkStringEmpty(token):
-                    response['msg'] = str('username_null')
+                    response['msg'] = str('username/token_null')
                     response['code'] = 221  # 账号为空
                     return JsonResponse(response)
             except AttributeError:
