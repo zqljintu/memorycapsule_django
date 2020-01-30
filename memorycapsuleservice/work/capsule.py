@@ -66,6 +66,7 @@ def show_capsules(request):
     try:
         username = request.GET.get('username')
         page = request.GET.get('page')
+        page = int(page)
         if User.objects.all().filter(username=username).count() == 0:
             response['msg'] = str('username_null')
             response['code'] = 202  # 没有该账号
