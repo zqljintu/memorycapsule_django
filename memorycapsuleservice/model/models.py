@@ -14,7 +14,7 @@ class Capsule(models.Model):
     capsule_date = models.CharField(max_length=128, default='')
     capsule_location = models.CharField(max_length=128, default='')
     capsule_person = models.CharField(max_length=128, default='')
-    capsule_image = models.CharField(max_length=128, default='')
+    capsule_image = models.ImageField(upload_to='capsuleimage/')
     capsule_create_time = models.DateTimeField(default=timezone.now)
 
     def __unicode__(self):

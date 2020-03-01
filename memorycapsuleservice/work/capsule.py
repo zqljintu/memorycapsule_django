@@ -35,7 +35,7 @@ def add_capsule(request):
         c_date = request.POST.get('capsule_date', '')
         c_location = request.POST.get('capsule_location', '')
         c_person = request.POST.get('capsule_person', '')
-        c_image = request.POST.get('capsule_image', '')
+        c_image = request.FILES.get('capsule_image', '')
         if utils.checkStringEmpty(c_id):
             response['msg'] = 'add_codenull'
             response['code'] = 209
