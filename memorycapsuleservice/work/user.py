@@ -30,6 +30,7 @@ def user_loginup(request):
         userpassword = request.POST.get('password', '')
         useremail = request.POST.get('email', '')
         usersex = request.POST.get('sex', '')
+        userimg = request.POST.get('userimg', '')
         user = User()
         if len(username) != 0 and len(userpassword) != 0:
             if len(User.objects.all().filter(username=username)) == 0 and (username != ''):
@@ -37,6 +38,7 @@ def user_loginup(request):
                 user.userpassword = userpassword
                 user.useremail = useremail
                 user.usersex = usersex
+                user.userimg = userimg
                 user.save()
                 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
                 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
