@@ -64,7 +64,9 @@ class User(models.Model):
     usersex = models.CharField(max_length=32, choices=gender, default=M)
     usernickname = models.CharField(max_length=128, default='')
     usertitle = models.CharField(max_length=256, default='')
+    userimg = models.ImageField(upload_to='userimage/',default= '')
     usercreatetime = models.DateTimeField(default=timezone.now)
+    userlogintime = models.DateTimeField(default=timezone.now())
 
     def __unicode__(self):
         return self.username
