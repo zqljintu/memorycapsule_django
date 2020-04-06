@@ -1,4 +1,6 @@
+from django.db.models import DateTimeField
 from django.shortcuts import render
+from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 
@@ -30,7 +32,7 @@ def user_loginup(request):
         userpassword = request.POST.get('password', '')
         useremail = request.POST.get('email', '')
         usersex = request.POST.get('sex', '')
-        userimg = request.POST.get('userimg', '')
+        userimg = request.FILES.get('userimage', '')
         user = User()
         if len(username) != 0 and len(userpassword) != 0:
             if len(User.objects.all().filter(username=username)) == 0 and (username != ''):
@@ -46,7 +48,8 @@ def user_loginup(request):
                 token = jwt_encode_handler(payload)
                 response['msg'] = 'logup_success'
                 response['token'] = token
-                response['sex'] = usersex
+                response['sex'] = user.usersex
+                response['userimage'] = user.userimg
                 if user.usertitle == '':
                     response['usertitle'] = '个性签名'
                 else:
@@ -119,6 +122,8 @@ def user_login(request):
         else:
             if utils.checkTwoString(userpassword, User.objects.get(username=username).userpassword):
                 user = User.objects.get(username=username)
+                user.userlogintime = timezone.now()
+                user.save()
                 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
                 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
                 payload = jwt_payload_handler(user)
@@ -134,6 +139,7 @@ def user_login(request):
                     response['nickname'] = '昵称'
                 else:
                     response['nickname'] = user.usernickname
+                response['userimage'] = user.userimg
                 response['code'] = 203  # 登录成功
             else:
                 response['msg'] = 'login_error'

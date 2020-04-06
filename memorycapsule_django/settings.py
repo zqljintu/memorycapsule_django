@@ -147,7 +147,7 @@ REST_FRAMEWORK = {
 }
 # jwt载荷中的有效期设置
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),#有效期设置
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),#有效期设置
     'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(hours=24), #续期有效期（该设置可在24小时内带未失效的token 进行续期）
 
