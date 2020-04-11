@@ -49,7 +49,10 @@ def user_loginup(request):
                 response['msg'] = 'logup_success'
                 response['token'] = token
                 response['sex'] = user.usersex
-                response['userimage'] = user.userimg
+                try:
+                    response['userimage'] = user.userimg.url
+                except Exception as e:
+                    response['userimage'] = ''
                 if user.usertitle == '':
                     response['usertitle'] = '个性签名'
                 else:
@@ -139,7 +142,11 @@ def user_login(request):
                     response['nickname'] = '昵称'
                 else:
                     response['nickname'] = user.usernickname
-                response['userimage'] = user.userimg
+
+                try:
+                    response['userimage'] = user.userimg.url
+                except Exception as e:
+                    response['userimage'] = ''
                 response['code'] = 203  # 登录成功
             else:
                 response['msg'] = 'login_error'

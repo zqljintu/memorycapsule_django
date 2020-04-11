@@ -251,11 +251,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT=os.path.join(BASE_DIR, "static/media")
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')
+MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Add for vuejs
 # 配置静态文件路径
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "vue_work/dist/static"),
+    os.path.join(BASE_DIR, "vue_work/dist/static").replace('\\', '/'),
 ]
