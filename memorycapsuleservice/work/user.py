@@ -207,3 +207,38 @@ def edit_usertitle(request):
         response['code'] = 1
 
     return JsonResponse(response)
+
+# 获取用户个人信息
+@require_http_methods(["GET"])
+def user_info(request):
+    if request.method == 'POST':
+        return render(request, 'get.html')
+    response = {}
+    try:
+        username = request.POST.get('username', '')
+        if len(User.objects.all().filter(username=username)) == 0:
+            response['msg'] = 'username_null'
+            response['code'] = 202  # 没有该账号
+        else:
+            user = User.objects.get(username=username)
+            if user.usertitle == '':
+                response['usertitle'] = '个性签名'
+            else:
+                response['usertitle'] = user.usertitle
+            if user.usernickname == '':
+                response['nickname'] = '昵称'
+            else:
+                response['nickname'] = user.usernickname
+
+            try:
+                response['userimage'] = user.userimg.url
+            except Exception as e:
+                response['userimage'] = ''
+            response['code'] = 203  # 登录成功
+            response['msg'] = 'success'
+            response['code'] = 0
+    except Exception as e:
+        response['msg'] = str(e)
+        response['code'] = 1
+
+    return JsonResponse(response)
