@@ -26,7 +26,7 @@ from django.views.generic.base import TemplateView
 from memorycapsule_django.settings import MEDIA_ROOT
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin', admin.site.urls),
     url(r'^api/', include(memorycapsuleservice.url.urls)),
     url(r'', TemplateView.as_view(template_name="index.html")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

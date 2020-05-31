@@ -157,6 +157,7 @@ def user_login(request):
 
     return JsonResponse(response)
 
+
 # 修改昵称
 @require_http_methods(["POST"])
 def edit_nickname(request):
@@ -192,6 +193,7 @@ def edit_usertitle(request):
     try:
         username = request.POST.get('username', '')
         usertitle = request.POST.get('usertitle', '')
+        logger.info('zzzzzzzzzzzzz-->%s', username)
         if len(User.objects.all().filter(username=username)) == 0:
             response['msg'] = 'username_null'
             response['code'] = 202  # 没有该账号
@@ -207,6 +209,7 @@ def edit_usertitle(request):
         response['code'] = 1
 
     return JsonResponse(response)
+
 
 # 获取用户个人信息
 @require_http_methods(["GET"])

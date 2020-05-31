@@ -12,7 +12,7 @@ class LoginMiddleware(MiddlewareMixin):
     def process_request(self, request):
         response = {}
         need_token = ['/api/user_logout', '/api/add_capsule', '/api/show_capsules', '/api/delete_capsule',
-                      '/api/edit_capsule', '/api/size_capsule', '/api/edit_nickname', '/api/edit_usertitle'
+                      '/api/edit_capsule', '/api/size_capsule', '/api/edit_nickname', '/api/edit_usertitle',
                       '/api/user_info']
         if request.path not in need_token:
             pass
