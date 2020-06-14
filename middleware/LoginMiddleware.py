@@ -13,7 +13,7 @@ class LoginMiddleware(MiddlewareMixin):
         response = {}
         need_token = ['/api/user_logout', '/api/add_capsule', '/api/show_capsules', '/api/delete_capsule',
                       '/api/edit_capsule', '/api/size_capsule', '/api/edit_nickname', '/api/edit_usertitle',
-                      '/api/user_info']
+                      '/api/user_info', '/api/edit_userimg']
         if request.path not in need_token:
             pass
         else:

@@ -245,3 +245,32 @@ def user_info(request):
         response['code'] = 1
 
     return JsonResponse(response)
+
+@require_http_methods(["POST"])
+def edit_userimg(request):
+    if request.method == 'GET':
+        return render(request, 'post.html')
+    response = {}
+    try:
+        username = request.POST.get('username', '')
+        userimg = request.FILES.get('userimage', '')
+        logger.info('zzzzzzzzzzzzz-->%s', username)
+        if len(User.objects.all().filter(username=username)) == 0:
+            response['msg'] = 'username_null'
+            response['code'] = 202  # 没有该账号
+        else:
+            user = User.objects.get(username=username)
+            user.userimg = userimg
+            user.save()
+            response['msg'] = 'edit_userimg success'
+            response['code'] = 225
+            try:
+                response['userimage'] = user.userimg.url
+            except Exception as  e:
+                response['userimage'] = ""
+
+    except Exception as e:
+        response['msg'] = str(e)
+        response['code'] = 1
+
+    return JsonResponse(response)

@@ -9,6 +9,7 @@ urlpatterns = [
     url(r"user_logout$", user.user_logout, name="注销"),
     url(r"edit_nickname$", user.edit_nickname, name="修改昵称"),
     url(r"edit_usertitle$", user.edit_usertitle, name="修改个性签名"),
+    url(r"edit_userimg$", user.edit_userimg, name="修改用户头像"),
     url(r"user_info$", user.user_info, name="获取用户信息数据"),
     # 业务相关
     url(r'add_capsule$', capsule.add_capsule, name="添加日记"),
