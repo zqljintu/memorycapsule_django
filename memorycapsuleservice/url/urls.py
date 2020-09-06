@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from memorycapsuleservice.work import user, capsule
+from memorycapsuleservice.work import user, capsule, manager
 
 urlpatterns = [
     # 用户相关
@@ -17,4 +17,6 @@ urlpatterns = [
     url(r"delete_capsule", capsule.delete_capsule, name="删除"),
     url(r"edit_capsule", capsule.edit_capsule, name="修改"),
     url(r"size_capsule$", capsule.get_capsuleSize, name="获取日记条数")
+    # 管理相关
+    url(r"manage_main",manager.manage_main, name="主方法")
 ]
