@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from memorycapsuleservice.work import user, capsule, manager
+from memorycapsuleservice.work import user, capsule, manager, download
 
 urlpatterns = [
     # 用户相关
@@ -18,5 +18,8 @@ urlpatterns = [
     url(r"edit_capsule", capsule.edit_capsule, name="修改"),
     url(r"size_capsule$", capsule.get_capsuleSize, name="获取日记条数"),
     # 管理相关
-    url(r"manage_main",manager.manage_main, name="主方法")
+    url(r"manage_main", manager.manage_main, name="主方法"),
+    #下载相关
+    url(r'download_apk', download.download_file, name="下载文件"),
+    url(r'checkversion_apk', download.checkVersion_apk, name="检测更新文件")
 ]
